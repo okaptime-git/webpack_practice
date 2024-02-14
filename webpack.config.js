@@ -3,8 +3,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 //clean-webpack-pluginの中にたくさんあるけど、これだけ{}で囲むと、CleanWebpackPluginだけ使うという意味になる
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+// vueのプラグイン読み込み↓
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
+  mode: 'development',
+  // ↓記述したまんまの js をブラウザで確認できるようになる
+  devtool: 'source-map',
   entry: './src/js/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -14,6 +19,28 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.vue$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'vue-loader',
+          },
+        ],
+      },
+      {
+        test: /\.js/,
+        exclude: /node-modules/,
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              // reactでは、↓だけだと足りない
+              presets: [['@babel/preset-env', { targets: '> 0.25%, not dead' }], '@babel/preset-react'],
+            },
+          },
+        ],
+      },
+      {
         test: /\.(css|sass|scss)/,
         use: [
           {
@@ -22,6 +49,11 @@ module.exports = {
           },
           {
             loader: 'css-loader', // cssを見つけたら読み込んで、、、
+            // ↓scssをブラウザで確認できるようになる
+            options: {
+              // sourceMap: true,
+              sourceMap: false,
+            },
           },
           {
             loader: 'sass-loader', // scss使用できるようにする
@@ -30,12 +62,24 @@ module.exports = {
       },
       {
         // test: /\.png|\.jpg)/,
-        test: /\.(png|jpg)/,
+        test: /\.(png|jpg|jpeg|svg)/,
         type: 'asset/resource',
         generator: {
           filename: 'img/[name][ext]',
         },
         use: [
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+              webp: {
+                quality: 75,
+              },
+            },
+          },
           // ↓↓↓webpack5をインストールしていれば、別の書き方ができる↑↑↑（type、generatorを記述）
           // file-loader、url-loaderをアンインストールした
           //
@@ -69,6 +113,7 @@ module.exports = {
   },
   // module
   plugins: [
+    new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: './css/style.css',
     }),
@@ -95,5 +140,4 @@ module.exports = {
     compress: true,
     port: 9000,
   },
-  mode: 'development',
 };
