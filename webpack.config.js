@@ -28,17 +28,24 @@ module.exports = {
       {
         // test: /\.png|\.jpg)/,
         test: /\.(png|jpg)/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'img/[name][ext]',
+        },
         use: [
-          {
-            // ここまでの設定だと、dataとしてめっちゃ長い文字列でindex.htmlに画像が出てしまう
-            // loader: 'url-loader',
-            loader: 'file-loader',
-            options: {
-              esModule: false,
-              // extentionの略
-              name: 'img/[name].[ext]',
-            },
-          },
+          // ↓↓↓webpack5をインストールしていれば、別の書き方ができる↑↑↑（type、generatorを記述）
+          // file-loader、url-loaderをアンインストールした
+          //
+          // {
+          //   // ここまでの設定だと、dataとしてめっちゃ長い文字列でindex.htmlに画像が出てしまう
+          //   // loader: 'url-loader',
+          //   loader: 'file-loader',
+          //   options: {
+          //     esModule: false,
+          //     // extentionの略
+          //     name: 'img/[name].[ext]',
+          //   },
+          // },
         ],
       },
     ],
