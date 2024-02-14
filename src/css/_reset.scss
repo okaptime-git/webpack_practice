@@ -5,6 +5,7 @@ Last Updated: 2010-09-17
 Author: Richard Clark - http://richclarkdesign.com
 Twitter: @rich_clark
 */
+
 html,
 body,
 div,
@@ -114,7 +115,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
+  content: '';
   content: none;
 }
 
@@ -170,24 +171,3 @@ input,
 select {
   vertical-align: middle;
 }
-
-footer {
-  background-color: #eee;
-}
-
-body {
-  color: pink;
-  margin-top: 100px;
-}
-
-.content .title, .content .title-md, .content .title-lg {
-  font-size: 40px;
-  color: pink;
-  background-color: antiquewhite;
-}
-.content .title-lg {
-  font-size: 32px;
-}
-.content .title-md {
-  font-size: 24px;
-}/*# sourceMappingURL=style.css.map */

@@ -14,7 +14,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.css/,
+        test: /\.(css|sass|scss)/,
         use: [
           {
             // loader: 'style-loader', // style-loaderを適用してね（下から上に適用される）<style></style>として、jsを通して出力されるが、別のものを使用する！
@@ -22,6 +22,9 @@ module.exports = {
           },
           {
             loader: 'css-loader', // cssを見つけたら読み込んで、、、
+          },
+          {
+            loader: 'sass-loader', // scss使用できるようにする
           },
         ],
       },
@@ -78,6 +81,19 @@ module.exports = {
       template: './src/templates/access.pug',
       filename: 'access.html',
     }),
+    new HtmlWebpackPlugin({
+      template: './src/templates/members/taro.pug',
+      filename: 'members/taro.html',
+    }),
     new CleanWebpackPlugin(),
   ],
+  // webpack-dev-serverで追加したもの↓
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'src'),
+    },
+    compress: true,
+    port: 9000,
+  },
+  mode: 'development',
 };
